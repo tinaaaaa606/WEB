@@ -1,0 +1,207 @@
+
+<section style="background-color:#fdfdfd; padding:40px; font-family:Arial, sans-serif; color:#333;">
+  <style>
+    .menu-section { max-width: 800px; margin: 0 auto; }
+    .category-block { margin-bottom: 40px; }
+    .menu-card {
+      border: 1px solid #ccc; border-radius: 8px;
+      margin-bottom: 20px; padding: 16px; background-color: #fff;
+    }
+    .menu-card h3 { margin: 0 0 8px; color: #C22620; font-size: 20px; }
+    .menu-card .price { font-weight: bold; color: #021B33; }
+    .menu-card .add-on { font-size: 0.9em; color: #666; }
+  </style>
+
+  <div class="menu-section" id="menu-container"></div>
+
+  <script>
+    const menuData = {
+  "Salad": [
+    {
+      "name": "Thai Salad",
+      "description": "Iceberg lettuce, carrots, tomatoes, red onions, cucumber, and fried tofu. Served with our peanut dressing.",
+      "protein": "\u2013",
+      "small_price": "$30",
+      "small_add": "",
+      "large_price": "\u2013",
+      "large_add": ""
+    }
+  ],
+  "Fried Rice": [
+    {
+      "name": "Thai Fried Rice",
+      "description": "Rice stir-fried with egg, peas, carrots, onions, scallions, tomatoes, cilantro, and cucumber slices.",
+      "protein": "Vegetable, Tofu, Chicken",
+      "small_price": "$55",
+      "small_add": "+ $10 Shrimp",
+      "large_price": "$110",
+      "large_add": "+ $20 Shrimp"
+    },
+    {
+      "name": "Pineapple Fried Rice",
+      "description": "Rice stir-fried with egg, pineapple, cilantro, scallions, raisins, curry powder and cashew nuts.",
+      "protein": "Vegetable, Tofu, Chicken",
+      "small_price": "$55",
+      "small_add": "+ $10 Shrimp",
+      "large_price": "$110",
+      "large_add": "+ $20 Shrimp"
+    },
+    {
+      "name": "Basil Fried Rice",
+      "description": "Rice stir-fried with red bell peppers, onions, and basil leaves.",
+      "protein": "Vegetable, Tofu, Chicken",
+      "small_price": "$55",
+      "small_add": "+ $10 Shrimp",
+      "large_price": "$110",
+      "large_add": "+ $20 Shrimp"
+    }
+  ],
+  "Noodles": [
+    {
+      "name": "Pad Thai",
+      "description": "Thin rice noodles, egg, bean sprouts, scallions, top with crushed peanuts and cilantro.",
+      "protein": "Vegetable, Tofu, Chicken",
+      "small_price": "$55",
+      "small_add": "+ $10 Shrimp",
+      "large_price": "$110",
+      "large_add": "+ $20 Shrimp"
+    },
+    {
+      "name": "Pad See Ew",
+      "description": "Broad rice noodles, egg, broccoli, and carrots with soy sauce.",
+      "protein": "Vegetable, Tofu, Chicken",
+      "small_price": "$55",
+      "small_add": "+ $10 Shrimp",
+      "large_price": "$110",
+      "large_add": "+ $20 Shrimp"
+    },
+    {
+      "name": "Drunken Noodle",
+      "description": "Broad rice noodles, onions, red bell peppers, tomatoes, bamboo shoots, basil leaves.",
+      "protein": "Vegetable, Tofu, Chicken",
+      "small_price": "$55",
+      "small_add": "+ $10 Shrimp",
+      "large_price": "$110",
+      "large_add": "+ $20 Shrimp"
+    }
+  ],
+  "Stir-Fry": [
+    {
+      "name": "Sweet Basil",
+      "description": "Your choice of meat with Basil, Carrots, Mushrooms, Onions, and Red bell peppers.",
+      "protein": "Vegetable, Tofu, Chicken",
+      "small_price": "$60",
+      "small_add": "+ $10 Shrimp<br>+ $15 Jasmine Rice",
+      "large_price": "$120",
+      "large_add": "+ $20 Shrimp<br>+ $25 Jasmine Rice"
+    },
+    {
+      "name": "Cashew Nuts",
+      "description": "Your choice of meat with Cashew nuts, Carrots, Onions, Red bell peppers, and Scallions.",
+      "protein": "Vegetable, Tofu, Chicken",
+      "small_price": "$60",
+      "small_add": "+ $10 Shrimp<br>+ $15 Jasmine Rice",
+      "large_price": "$120",
+      "large_add": "+ $20 Shrimp<br>+ $25 Jasmine Rice"
+    },
+    {
+      "name": "Garlic and Pepper",
+      "description": "Garlic pepper sauce with Cabbage, Scallions, and top with Cilantro.",
+      "protein": "Vegetable, Tofu, Chicken",
+      "small_price": "$60",
+      "small_add": "+ $10 Shrimp<br>+ $15 Jasmine Rice",
+      "large_price": "$120",
+      "large_add": "+ $20 Shrimp<br>+ $25 Jasmine Rice"
+    },
+    {
+      "name": "Broccoli",
+      "description": "Your choice of meat with Broccoli, Garlic, and Oyster sauce.",
+      "protein": "Vegetable, Tofu, Chicken",
+      "small_price": "$60",
+      "small_add": "+ $10 Shrimp<br>+ $15 Jasmine Rice",
+      "large_price": "$120",
+      "large_add": "+ $20 Shrimp<br>+ $25 Jasmine Rice"
+    },
+    {
+      "name": "Eggplant",
+      "description": "Your choice of meat with Eggplants, Carrots, Red bell peppers, Sweet basil, and Chili sauce.",
+      "protein": "Vegetable, Tofu, Chicken",
+      "small_price": "$60",
+      "small_add": "+ $10 Shrimp<br>+ $15 Jasmine Rice",
+      "large_price": "$120",
+      "large_add": "+ $20 Shrimp<br>+ $25 Jasmine Rice"
+    },
+    {
+      "name": "Mixed Vegetables Stir-fry",
+      "description": "Cabbage, Broccoli, Baby corn, Carrots, Cauliflower, Celery, Zucchini, Red Bell Peppers, Bean sprouts, onions. Top with Garlic and Cilantro.",
+      "protein": "Vegetable, Tofu, Chicken",
+      "small_price": "$60",
+      "small_add": "+ $10 Shrimp<br>+ $15 Jasmine Rice",
+      "large_price": "$120",
+      "large_add": "+ $20 Shrimp<br>+ $25 Jasmine Rice"
+    }
+  ],
+  "Curry": [
+    {
+      "name": "Green Curry",
+      "description": "Green curry paste in coconut milk with bamboo shoots, red bell peppers, peas, carrots, and basil leaves.",
+      "protein": "Vegetable, Tofu, Chicken",
+      "small_price": "$60",
+      "small_add": "+ $10 Shrimp<br>+ $15 Jasmine Rice",
+      "large_price": "$120",
+      "large_add": "+ $20 Shrimp<br>+ $25 Jasmine Rice"
+    },
+    {
+      "name": "Yellow Curry",
+      "description": "Your Choice of Meat, potatoes, onions, red bell peppers, carrots with coconut milk.",
+      "protein": "Vegetable, Tofu, Chicken",
+      "small_price": "$60",
+      "small_add": "+ $10 Shrimp<br>+ $15 Jasmine Rice",
+      "large_price": "$120",
+      "large_add": "+ $20 Shrimp<br>+ $25 Jasmine Rice"
+    },
+    {
+      "name": "Panang Curry",
+      "description": "Panang curry with coconut milk, red bell peppers, and basil leaves.",
+      "protein": "Vegetable, Tofu, Chicken",
+      "small_price": "$60",
+      "small_add": "+ $10 Shrimp<br>+ $15 Jasmine Rice",
+      "large_price": "$120",
+      "large_add": "+ $20 Shrimp<br>+ $25 Jasmine Rice"
+    },
+    {
+      "name": "Pineapple Curry",
+      "description": "Loaded with vibrant pineapple chunks and your choice of protein, all drenched in a rich red curry.",
+      "protein": "Vegetable, Tofu, Chicken",
+      "small_price": "$60",
+      "small_add": "+ $10 Shrimp<br>+ $15 Jasmine Rice",
+      "large_price": "$120",
+      "large_add": "+ $20 Shrimp<br>+ $25 Jasmine Rice"
+    }
+  ]
+};
+
+    const container = document.getElementById('menu-container');
+
+    for (const category in menuData) {
+      const block = document.createElement('div');
+      block.className = 'category-block';
+      block.innerHTML = `<h2 style="color:#C22620;">${category}</h2>`;
+      menuData[category].forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'menu-card';
+        card.innerHTML = `
+          <h3>${item.name}</h3>
+          <p>${item.description}</p>
+          <p><strong>Protein:</strong> ${item.protein}</p>
+          <p class="price">Small Tray (serves 3–5): ${item.small_price}</p>
+          ${item.small_add ? `<p class="add-on">${item.small_add}</p>` : ''}
+          <p class="price">Large Tray (serves 6–9): ${item.large_price}</p>
+          ${item.large_add ? `<p class="add-on">${item.large_add}</p>` : ''}
+        `;
+        block.appendChild(card);
+      });
+      container.appendChild(block);
+    }
+  </script>
+</section>
