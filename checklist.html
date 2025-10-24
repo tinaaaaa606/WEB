@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wawio Installation Checklists</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+            background-color: #f4f7f9;
+        }
+        .main-container {
+            max-width: 1200px;
+            margin: auto;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        .layout-wrapper {
+            display: flex;
+        }
+
+        /* Vertical Tab Menu */
+        .tab-menu {
+            display: flex;
+            flex-direction: column;
+            flex: 0 0 220px;
+            background-color: #f8f9fa;
+            border-right: 1px solid #dee2e6;
+        }
+        .tab-button {
+            padding: 15px 20px;
+            cursor: pointer;
+            border: none;
+            background-color: transparent;
+            font-size: 1em;
+            font-weight: 600;
+            color: #495057;
+            text-align: left;
+            border-left: 4px solid transparent;
+            transition: all 0.2s ease-in-out;
+        }
+        .tab-button:hover {
+            background-color: #e9ecef;
+            color: #000;
+        }
+        .tab-button.active {
+            background-color: #fff;
+        }
+        
+        /* Content Area */
+        .content-area {
+            flex: 1;
+            padding: 20px 30px;
+            min-width: 0; /* Prevents content from overflowing */
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+
+        /* General Checklist Styles */
+        h1 {
+            border-bottom: 2px solid #ccc;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        h2 {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+            margin-top: 30px;
+        }
+        h3 {
+            margin-top: 25px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+            font-size: 0.9em;
+        }
+        th {
+            font-weight: bold;
+        }
+        td.status-cell {
+            text-align: center;
+            vertical-align: middle;
+        }
+        .metadata-header {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+            table-layout: fixed;
+        }
+        .metadata-header td {
+            border: none;
+            padding: 5px 10px 5px 0;
+            font-size: 1em;
+            line-height: 1.5;
+        }
+        .metadata-header input[type="text"],
+        .metadata-header input[type="date"] {
+            border: none;
+            border-bottom: 1px dashed #333;
+            width: 90%;
+            padding: 2px;
+            font-size: 1em;
+            font-family: Arial, sans-serif;
+        }
+        .business-name-input {
+            font-size: 1.2em !important;
+            font-weight: bold;
+            padding: 4px !important;
+        }
+        .action-buttons {
+            margin: 20px 0;
+            display: flex;
+            gap: 10px;
+        }
+        .action-buttons button {
+            padding: 10px 15px;
+            cursor: pointer;
+            color: white;
+            border: none;
+            border-radius: 4px;
+        }
+        .button-save { background-color: #28a745 !important; }
+        .button-clear { background-color: #6c757d !important; }
+        
+        td textarea {
+            width: 100%;
+            border: 1px solid transparent;
+            padding: 4px;
+            font-family: inherit;
+            font-size: inherit;
+            box-sizing: border-box;
+            background-color: transparent;
+            resize: vertical;
+            min-height: 24px;
+            line-height: 1.4;
+            overflow-y: hidden;
+        }
+        td textarea:focus {
+            outline: 1px solid #007bff;
+            background-color: #f8f9fa;
+        }
+        
+        /* --- Themes --- */
+        .pos-prep-theme h1, .pos-prep-theme h2 { color: #8B0000; }
+        .pos-prep-theme .action-buttons button:not(.button-save):not(.button-clear) { background-color: #8B0000; }
+        .pos-prep-theme th { background-color: #fce4e4; }
+        .pos-prep-theme .tab-button.active { border-left-color: #8B0000; color: #8B0000; }
+
+        .four-soft-theme h1, .four-soft-theme h2 { color: #0056b3; }
+        .four-soft-theme .action-buttons button:not(.button-save):not(.button-clear) { background-color: #007bff; }
+        .four-soft-theme th { background-color: #e7f1ff; }
+        .four-soft-theme .tab-button.active { border-left-color: #007bff; color: #0056b3; }
+
+        .o-att-theme h1, .o-att-theme h2 { color: #28a745; }
+        .o-att-theme .action-buttons button:not(.button-save):not(.button-clear) { background-color: #28a745; }
+        .o-att-theme th { background-color: #d4edda; }
+        .o-att-theme .troubleshooting-row { background-color: #fffacd; }
+        .o-att-theme .tab-button.active { border-left-color: #28a745; color: #28a745; }
+        
+        .rdp-setup-theme h1, .rdp-setup-theme h2 { color: #fd7e14; }
+        .rdp-setup-theme .action-buttons button:not(.button-save):not(.button-clear) { background-color: #fd7e14; }
+        .rdp-setup-theme th { background-color: #fff3e0; }
+        .rdp-setup-theme .tab-button.active { border-left-color: #fd7e14; color: #fd7e14; }
+        
+        .media-display-theme h1, .media-display-theme h2 { color: #6f42c1; }
+        .media-display-theme .action-buttons button:not(.button-save):not(.button-clear) { background-color: #6f42c1; }
+        .media-display-theme th { background-color: #e9d8fd; }
+        .media-display-theme .troubleshooting-row { background-color: #fffacd; }
+        .media-display-theme .tab-button.active { border-left-color: #6f42c1; color: #6f42c1; }
+
+        @media (max-width: 992px) {
+            .layout-wrapper { flex-direction: column; }
+            .tab-menu { flex-direction: row; border-right: none; border-bottom: 1px solid #dee2e6; flex-basis: auto; overflow-x: auto; }
+            .tab-button { border-left: none; border-bottom: 4px solid transparent; text-align: center; }
+            .pos-prep-theme .tab-button.active { border-bottom-color: #8B0000; }
+            .four-soft-theme .tab-button.active { border-bottom-color: #007bff; }
+            .o-att-theme .tab-button.active { border-bottom-color: #28a745; }
+            .rdp-setup-theme .tab-button.active { border-bottom-color: #fd7e14; }
+            .media-display-theme .tab-button.active { border-bottom-color: #6f42c1; }
+            .content-area { padding: 20px; }
+        }
+
+        @media print {
+            body { padding: 0; margin: 0; }
+            .tab-menu, .action-buttons { display: none; }
+            .main-container { box-shadow: none; }
+            .content-area { padding: 0; }
+            h1 { text-align: center; }
+            th { -webkit-print-color-adjust: exact; color-adjust: exact; }
+            input[type="text"], input[type="date"], textarea { border: none !important; background: transparent !important; resize: none !important; }
+            input[type="date"]::-webkit-calendar-picker-indicator { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-container">
+    <div class="layout-wrapper">
+        <div class="tab-menu">
+            <button class="tab-button active" onclick="openTab(event, 'pos-prep')">POS Preparation</button>
+            <button class="tab-button" onclick="openTab(event, 'four-soft')">4Soft Installation</button>
+            <button class="tab-button" onclick="openTab(event, 'o-att')">O-ATT Installation</button>
+            <button class="tab-button" onclick="openTab(event, 'rdp-setup')">RDP Local Setup</button>
+            <button class="tab-button" onclick="openTab(event, 'media-display')">Media Display Setup</button>
+        </div>
+
+        <div class="content-area">
+            <div id="pos-prep" class="tab-content pos-prep-theme active">
+                <h1>POS Computer Preparation Checklist</h1>
+                <table class="metadata-header"><tr><td colspan="3">**Business Name:** <input type="text" id="pos-prep-business" class="business-name-input" value=""/></td></tr><tr><td style="width: 35%;">**Computer/Station ID:** <input type="text" id="pos-prep-station" value=""/></td><td style="width: 35%;">**Technician:** <input type="text" id="pos-prep-tech" value=""/></td><td style="width: 30%;">**Date Completed:** <input type="date" id="pos-prep-date" value=""/></td></tr></table>
+                <p>*Note: Configuration steps can generally be done in any order, but system resets should be performed first.*</p>
+                <div class="action-buttons">
+                    <button class="button-save" onclick="saveProgress()">Save Progress</button>
+                    <button onclick="saveAsPDF()">Export to PDF</button>
+                    <button class="button-clear" onclick="clearProgress()">Clear Progress</button>
+                </div>
+                <h2>I. Initial System Setup & Windows Updates</h2>
+                <table><thead><tr><th style="width: 5%;">Step</th><th style="width: 25%;">Task Description</th><th style="width: 10%;">Completed</th><th style="width: 30%;">Configuration Detail</th><th style="width: 30%;">Remark</th></tr></thead><tbody><tr><td>**I.1**</td><td>Reset PC or Reinstall Windows (if needed)</td><td class="status-cell"><input type="checkbox"/></td><td>Must be the first step if performed.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>**I.2**</td><td>Create Local Windows Account</td><td class="status-cell"><input type="checkbox"/></td><td>Use a **local Windows account** (not tied to email).</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>**I.3**</td><td>Set Local Windows User Name</td><td class="status-cell"><input type="checkbox"/></td><td>Local Windows user account will always be **“POS”**.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>**I.4**</td><td>Update Windows</td><td class="status-cell"><input type="checkbox"/></td><td>Update Windows until it is up-to-date.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>**I.5**</td><td>Skip Optional Updates</td><td class="status-cell"><input type="checkbox"/></td><td>Skip “Optional Updates”.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr></tbody></table>
+                <h2>II. Core System Identification & Control</h2>
+                <table><thead><tr><th style="width: 5%;">Step</th><th style="width: 25%;">Task Description</th><th style="width: 10%;">Completed</th><th style="width: 30%;">Configuration Detail</th><th style="width: 30%;">Remark</th></tr></thead><tbody><tr><td>**II.1**</td><td>Change Computer Name</td><td class="status-cell"><input type="checkbox"/></td><td>Change computer name accordingly.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>**II.2**</td><td>Change Workgroup Name</td><td class="status-cell"><input type="checkbox"/></td><td>Change **“Workgroup”** name to **“WAWIO”** (may require restart).</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>**II.3**</td><td>Configure Security and Maintenance</td><td class="status-cell"><input type="checkbox"/></td><td>Uncheck all boxes, except for **“Network firewall”**.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>**II.4**</td><td>Configure User Account Control (UAC)</td><td class="status-cell"><input type="checkbox"/></td><td>Drop the slider to the bottom ("Never notify").</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr></tbody></table>
+                <h2>III. Windows Settings Configuration</h2>
+                <table><thead><tr><th style="width: 5%;">Step</th><th style="width: 25%;">Task Description</th><th style="width: 10%;">Completed</th><th style="width: 30%;">Configuration Detail</th><th style="width: 30%;">Remark</th></tr></thead><tbody><tr><td>**III.1**</td><td>System > Notifications & actions</td><td class="status-cell"><input type="checkbox"/></td><td>**Turn off or uncheck all possible options**.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>**III.2**</td><td>Power & Sleep (Screen)</td><td class="status-cell"><input type="checkbox"/></td><td>Turn off screen after **1 hour** (when plugged in).</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>**III.3**</td><td>Power & Sleep (Sleep)</td><td class="status-cell"><input type="checkbox"/></td><td>Set PC to **“Never sleep”** (when plugged in).</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>**III.4**</td><td>Additional Power Settings (Buttons)</td><td class="status-cell"><input type="checkbox"/></td><td>Set power button to **“Do nothing”**.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>**III.5**</td><td>Tablet Mode (Sign In)</td><td class="status-cell"><input type="checkbox"/></td><td>Set “When I sign in” to **“Never use tablet mode”**.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>**III.6**</td><td>Tablet Mode (Usage)</td><td class="status-cell"><input type="checkbox"/></td><td>Set “When I use this device as a tablet” to **“Don’t switch”**.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>**III.7**</td><td>Multitasking</td><td class="status-cell"><input type="checkbox"/></td><td>**Turn off or uncheck all possible options**.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>**III.8**</td><td>Network & Internet Properties</td><td class="status-cell"><input type="checkbox"/></td><td>Set properties to **“Private”**.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>**III.9**</td><td>Desktop Icons</td><td class="status-cell"><input type="checkbox"/></td><td>Check only **“Computer”** and **“Recycle Bin”**.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>**III.10**</td><td>Taskbar Hiding</td><td class="status-cell"><input type="checkbox"/></td><td>Set **“On”** for automatically hide the taskbar.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>**III.11**</td><td>Taskbar Notification Area</td><td class="status-cell"><input type="checkbox"/></td><td>Set **“On”** only for **“Network”**.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>**III.12**</td><td>System Icons</td><td class="status-cell"><input type="checkbox"/></td><td>Set **“On”** for Clock, Network, Input Indicator, Touch keyboard; others **“Off”**.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr></tbody></table>
+                <h2>IV. Application Installation and File Management</h2>
+                <table><thead><tr><th style="width: 5%;">Step</th><th style="width: 25%;">Task Description</th><th style="width: 10%;">Completed</th><th style="width: 30%;">Configuration Detail</th><th style="width: 30%;">Remark</th></tr></thead><tbody><tr><td>**IV.1**</td><td>Install Chrome & Set Default</td><td class="status-cell"><input type="checkbox"/></td><td>Install and set Google Chrome as default browser.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>**IV.2**</td><td>Install Remote Access (Primary)</td><td class="status-cell"><input type="checkbox"/></td><td>Install **Teamviewer** and add to support account.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>**IV.3**</td><td>Install Remote Access (Secondary)</td><td class="status-cell"><input type="checkbox"/></td><td>Install **Supremo** and add to support account (if station has RDP).</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>**IV.4**</td><td>Create wSupport Folder</td><td class="status-cell"><input type="checkbox"/></td><td>Create **“wSupport”** folder under D:/ drive (or C:/).</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>**IV.5**</td><td>Download Softwares to wSupport</td><td class="status-cell"><input type="checkbox"/></td><td>Download Fonts, 4SoftSetup, Printer Driver, Net Framework.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>**IV.6**</td><td>Install Fonts</td><td class="status-cell"><input type="checkbox"/></td><td>Extract and install all fonts, then install **for all users**.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr></tbody></table>
+                <h2>V. Advanced Configuration</h2>
+                <table><thead><tr><th style="width: 5%;">Step</th><th style="width: 25%;">Task Description</th><th style="width: 10%;">Completed</th><th style="width: 30%;">Configuration Detail</th><th style="width: 30%;">Remark</th></tr></thead><tbody><tr><td>**V.1**</td><td>Set Time Zone</td><td class="status-cell"><input type="checkbox"/></td><td>Change Time zone according to the restaurant's area.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>**V.2**</td><td>Verify Firewall Status</td><td class="status-cell"><input type="checkbox"/></td><td>Make sure Firewall is active on all network types.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>**V.3**</td><td>Disable Reputation-based Protection</td><td class="status-cell"><input type="checkbox"/></td><td>App & Browser control > Reputation-based protection set to **“Off”**.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>**V.4**</td><td>Disable Automatic Updates (GPO)</td><td class="status-cell"><input type="checkbox"/></td><td>`gpedit.msc` > Set “Configure Automatic Updates” to **Disabled**.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>**V.5**</td><td>Remove Update Access (GPO)</td><td class="status-cell"><input type="checkbox"/></td><td>`gpedit.msc` > Set “Remove access to all Windows Update features” to **Enabled**.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>**V.6**</td><td>Disable Login Password</td><td class="status-cell"><input type="checkbox"/></td><td>`netplwiz` > **Uncheck** “User must enter a user name...”.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>**V.7**</td><td>Disable Windows Update Service</td><td class="status-cell"><input type="checkbox"/></td><td>`services.msc` > Find “Windows Update,” set **Startup type** to **Disabled**, and **Stop** service.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr></tbody></table>
+                <h2>VI. Printer Station Setup</h2>
+                <table><thead><tr><th style="width: 5%;">Step</th><th style="width: 25%;">Task Description</th><th style="width: 10%;">Completed</th><th style="width: 30%;">Configuration Detail</th><th style="width: 30%;">Remark</th></tr></thead><tbody><tr><td>**VI.1**</td><td>Install Printer Driver</td><td class="status-cell"><input type="checkbox"/></td><td>Install suitable driver for the devices.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>**VI.2**</td><td>Set Default Printer</td><td class="status-cell"><input type="checkbox"/></td><td>Manage and set the required printer as default.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>**VI.3**</td><td>Rename Printer</td><td class="status-cell"><input type="checkbox"/></td><td>Format: `RECEIPT01_USB`.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>**VI.4**</td><td>Adjust Paper Size</td><td class="status-cell"><input type="checkbox"/></td><td>Open “Preference” and adjust paper size.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>**VI.5**</td><td>Print Test Page</td><td class="status-cell"><input type="checkbox"/></td><td>Print a Test Page to test functionality.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr></tbody></table>
+            </div>
+
+            <div id="four-soft" class="tab-content four-soft-theme">
+                <h1>4Soft Installation Checklist</h1>
+                <table class="metadata-header"><tr><td colspan="3">**Business Name:** <input type="text" id="four-soft-business" class="business-name-input" value=""/></td></tr><tr><td style="width: 35%;">**Computer/Station ID:** <input type="text" id="four-soft-station" value=""/></td><td style="width: 35%;">**Technician:** <input type="text" id="four-soft-tech" value=""/></td><td style="width: 30%;">**Date Completed:** <input type="date" id="four-soft-date" value=""/></td></tr></table>
+                <p>*Note: This checklist assumes preparatory steps have been completed.*</p>
+                <div class="action-buttons">
+                    <button class="button-save" onclick="saveProgress()">Save Progress</button>
+                    <button onclick="saveAsPDF()">Export to PDF</button>
+                    <button class="button-clear" onclick="clearProgress()">Clear Progress</button>
+                </div>
+                <h2>A. Database Server Station</h2>
+                <table><thead><tr><th style="width: 5%;">Step</th><th style="width: 25%;">Task Description</th><th style="width: 10%;">Completed</th><th style="width: 30%;">Configuration Detail</th><th style="width: 30%;">Remark</th></tr></thead><tbody><tr><td>**A.1**</td><td>Set Computer Name and Restart</td><td class="status-cell"><input type="checkbox"/></td><td>Max 15 characters, not same as User Name.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>**A.2**</td><td>Install Required Runtimes</td><td class="status-cell"><input type="checkbox"/></td><td>Install .NET 6.0.16 (ASP.NET & Desktop) and .NET 4.7.2.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>**A.3**</td><td>Install SQL Server</td><td class="status-cell"><input type="checkbox"/></td><td>Install `SQLServer_86_x64 for 4Soft Rev3.exe`.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>**A.4**</td><td>Restart Computer (After SQL)</td><td class="status-cell"><input type="checkbox"/></td><td>Restart after step A.3.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>**A.5**</td><td>Run 4Soft Setup (Database)</td><td class="status-cell"><input type="checkbox"/></td><td>Run `4SoftSetup.exe`. Check “**Create Blank Database**,” then “Install”.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>**A.6**</td><td>Place Startup File</td><td class="status-cell"><input type="checkbox"/></td><td>Place correct `.bat` file into Windows startup folder.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>**A.7**</td><td>Run & Configure Server Config</td><td class="status-cell"><input type="checkbox"/></td><td>Run `server-config` as admin. Enter Database Server's **Computer Name**.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>**A.8**</td><td>(OPTIONAL) Restore Database</td><td class="status-cell"><input type="checkbox"/></td><td>Run `DatabaseTools.exe` and use restore function.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>**A.9**</td><td>Run & Activate Main License</td><td class="status-cell"><input type="checkbox"/></td><td>Run `activate` as admin. Enter main serial in both fields, click “Add POS”.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr></tbody></table>
+                <h2>B. Client Station</h2>
+                <table><thead><tr><th style="width: 5%;">Step</th><th style="width: 25%;">Task Description</th><th style="width: 10%;">Completed</th><th style="width: 30%;">Configuration Detail</th><th style="width: 30%;">Remark</th></tr></thead><tbody><tr><td>**B.1**</td><td>Set Computer Name and Restart</td><td class="status-cell"><input type="checkbox"/></td><td>Set a unique Computer Name.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>**B.2**</td><td>Install Required Runtimes</td><td class="status-cell"><input type="checkbox"/></td><td>Install .NET 6.0.16 (ASP.NET & Desktop) and .NET 4.7.2.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>**B.3**</td><td>Run 4Soft Setup (Client)</td><td class="status-cell"><input type="checkbox"/></td><td>Run `4SoftSetup.exe`. **Leave “Create Blank Database” unchecked**.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>**B.4**</td><td>Run & Configure Server Config</td><td class="status-cell"><input type="checkbox"/></td><td>Run `server-config` as admin. Enter **Database Server's Computer Name**.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>**B.5**</td><td>Run & Activate Client License</td><td class="status-cell"><input type="checkbox"/></td><td>Run `activate` as admin. Enter main serial and client POS serial.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr></tbody></table>
+                <h2>C. Post-Installation Configuration</h2>
+                <h3>Printers</h3>
+                <table><thead><tr><th style="width: 5%;">Step</th><th style="width: 25%;">Task Description</th><th style="width: 10%;">Completed</th><th style="width: 30%;">Configuration Detail</th><th style="width: 30%;">Remark</th></tr></thead><tbody><tr><td>**C.1**</td><td>Install Printer Driver</td><td class="status-cell"><input type="checkbox"/></td><td>Download and install the appropriate printer driver for the connected devices.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>**C.2**</td><td>Set Default Printer</td><td class="status-cell"><input type="checkbox"/></td><td>Set "Microsoft XPS Document Writer" as the default printer.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>**C.3**</td><td>Rename Printer</td><td class="status-cell"><input type="checkbox"/></td><td>Configure and rename the printer for operational convenience.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>**C.4**</td><td>Adjust Paper Size</td><td class="status-cell"><input type="checkbox"/></td><td>Adjust the paper size to match the printer's specifications.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr></tbody></table>
+                <h3>Database Backup</h3>
+                <table><thead><tr><th style="width: 5%;">Step</th><th style="width: 25%;">Task Description</th><th style="width: 10%;">Completed</th><th style="width: 30%;">Configuration Detail</th><th style="width: 30%;">Remark</th></tr></thead><tbody><tr><td>**C.5**</td><td>Create System Restore Point</td><td class="status-cell"><input type="checkbox"/></td><td>Create a Windows System Restore Point before major configuration changes.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>**C.6**</td><td>Configure Database Backup</td><td class="status-cell"><input type="checkbox"/></td><td>Path: `D:\DB_Backup` or external storage. For multi-station setups, set backup to WS02.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr></tbody></table>
+                <h3>Backoffice Settings</h3>
+                <table><thead><tr><th style="width: 5%;">Step</th><th style="width: 25%;">Task Description</th><th style="width: 10%;">Completed</th><th style="width: 30%;">Configuration Detail</th><th style="width: 30%;">Remark</th></tr></thead><tbody><tr><td>**C.7**</td><td>Configure Auto-Email</td><td class="status-cell"><input type="checkbox"/></td><td>Set up auto-email settings for customer receipts.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>**C.8**</td><td>Set Default Location</td><td class="status-cell"><input type="checkbox"/></td><td>Set default State / Postal Code in Customer settings.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>**C.9**</td><td>Configure Sales Tax</td><td class="status-cell"><input type="checkbox"/></td><td>Confirm tax rate with the customer or sales representative before setting.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>**C.10**</td><td>Create Wawio Employee</td><td class="status-cell"><input type="checkbox"/></td><td>Set up a Wawio employee profile with PIN: **91504**.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>**C.11**</td><td>Disable Server Banking</td><td class="status-cell"><input type="checkbox"/></td><td>Uncheck the "Server Banking" option.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>**C.12**</td><td>Enable Hold Order Timer</td><td class="status-cell"><input type="checkbox"/></td><td>Enable the "Hold Order Timer Station" feature.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>**C.13**</td><td>Enable Close Day Prompt</td><td class="status-cell"><input type="checkbox"/></td><td>Uncheck "Do not prompt to confirm close day".</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>**C.14**</td><td>Configure Daily Reports</td><td class="status-cell"><input type="checkbox"/></td><td>Set up port, enable Daily Close report, and send a test email.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>**C.15**</td><td>Configure Merchant ID (MID)</td><td class="status-cell"><input type="checkbox"/></td><td>Enter the correct MID for payment processing.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>**C.16**</td><td>Cash Discount Program</td><td class="status-cell"><input type="checkbox"/></td><td>Configure the Cash Discount Program (if applicable).</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>**C.17**</td><td>Credit Card Surcharge</td><td class="status-cell"><input type="checkbox"/></td><td>Configure the Credit Card Surcharge Program (if applicable).</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>**C.18**</td><td>Tip & Tax Order</td><td class="status-cell"><input type="checkbox"/></td><td>Set either "Tax after tip" or "Tip after tax" as required by the business.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>**C.19**</td><td>Configure Service Charge</td><td class="status-cell"><input type="checkbox"/></td><td>Set up any required service charges.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>**C.20**</td><td>Security Settings</td><td class="status-cell"><input type="checkbox"/></td><td>Configure Back Office Security Settings per requirements.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr></tbody></table>
+            </div>
+            
+            <div id="o-att" class="tab-content o-att-theme">
+                <h1>O-ATT Installation Checklist</h1>
+                <table class="metadata-header"><tr><td colspan="3">**Business Name:** <input type="text" id="o-att-business" class="business-name-input" value=""/></td></tr><tr><td style="width: 35%;">**Clover Device S/N:** <input type="text" id="o-att-station" value=""/></td><td style="width: 35%;">**Technician:** <input type="text" id="o-att-tech" value=""/></td><td style="width: 30%;">**Date Completed:** <input type="date" id="o-att-date" value=""/></td></tr></table>
+                <p>*Note: Ensure Clover Flex and POS are on the same network.*</p>
+                <div class="action-buttons">
+                    <button class="button-save" onclick="saveProgress()">Save Progress</button>
+                    <button onclick="saveAsPDF()">Export to PDF</button>
+                    <button class="button-clear" onclick="clearProgress()">Clear Progress</button>
+                </div>
+                <h2>Part 1: Initial Clover Device Setup</h2>
+                <table><thead><tr><th style="width: 5%;">Step</th><th style="width: 25%;">Task Description</th><th style="width: 10%;">Completed</th><th style="width: 30%;">Configuration Detail</th><th style="width: 30%;">Remark</th></tr></thead><tbody><tr><td>1.1</td><td>Obtain Activation Code</td><td class="status-cell"><input type="checkbox"/></td><td>Retrieve code from customer's email.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>1.2</td><td>Select Plan & Update</td><td class="status-cell"><input type="checkbox"/></td><td>Choose **"Chapter Plan" ($7.99)** and allow initial updates.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr></tbody></table>
+                <h2>Part 2: Connecting Clover Flex to O-ATT</h2>
+                <table><thead><tr><th style="width: 5%;">Step</th><th style="width: 25%;">Task Description</th><th style="width: 10%;">Completed</th><th style="width: 30%;">Configuration Detail</th><th style="width: 30%;">Remark</th></tr></thead><tbody><tr><td>2.1</td><td>Open Authorization URL</td><td class="status-cell"><input type="checkbox"/></td><td>On a PC, go to: `clover.com/oauth/authorize?client_id=FSGRP4Y2BZV8C`</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>2.2</td><td>Login and Install O-ATT</td><td class="status-cell"><input type="checkbox"/></td><td>Log in with owner's credentials. Click **"Connect"** on O-ATT app screen.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>2.3</td><td>Verify App Icon</td><td class="status-cell"><input type="checkbox"/></td><td>Verify O-ATT app icon appears on Clover Flex.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr></tbody></table>
+                <h2>Part 3: Registering O-ATT on POS</h2>
+                <table><thead><tr><th style="width: 5%;">Step</th><th style="width: 25%;">Task Description</th><th style="width: 10%;">Completed</th><th style="width: 30%;">Configuration Detail</th><th style="width: 30%;">Remark</th></tr></thead><tbody><tr><td>3.1</td><td>Navigate to Integration</td><td class="status-cell"><input type="checkbox"/></td><td>POS back office > **Integration** > **Order At The Table**.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>3.2</td><td>Register Device & Scan QR</td><td class="status-cell"><input type="checkbox"/></td><td>Click **"Register Device"**. On Clover, open O-ATT app and scan the QR code.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>3.3</td><td>Confirm Registration</td><td class="status-cell"><input type="checkbox"/></td><td>Tap **"Register"** on Clover. Verify **"Success"** message on POS.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr></tbody></table>
+                <h2>Troubleshooting</h2>
+                <table><thead><tr><th style="width: 5%;">Step</th><th style="width: 25%;">Task Description</th><th style="width: 10%;">Completed</th><th style="width: 30%;">Configuration Detail</th><th style="width: 30%;">Remark</th></tr></thead><tbody><tr class="troubleshooting-row"><td>T.1</td><td>App Not Appearing</td><td class="status-cell"><input type="checkbox"/></td><td>From Clover Dashboard: Uninstall O-ATT, then re-install.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr class="troubleshooting-row"><td>T.2</td><td>'Failed bad content' Error</td><td class="status-cell"><input type="checkbox"/></td><td>Device is already registered. Request supervisor to unregister.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr class="troubleshooting-row"><td>T.3</td><td>Info for Unregistering</td><td class="status-cell"><input type="checkbox"/></td><td>Provide: Restaurant Name, Main Serial #, and Clover Device S/N.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr></tbody></table>
+            </div>
+
+            <div id="rdp-setup" class="tab-content rdp-setup-theme">
+                <h1>RDP Local Setup Checklist</h1>
+                <table class="metadata-header"><tr><td colspan="3">**Business Name:** <input type="text" id="rdp-business" class="business-name-input" value=""/></td></tr><tr><td style="width: 35%;">**Main DB Server PC:** <input type="text" id="rdp-station" value=""/></td><td style="width: 35%;">**Technician:** <input type="text" id="rdp-tech" value=""/></td><td style="width: 30%;">**Date Completed:** <input type="date" id="rdp-date" value=""/></td></tr></table>
+                <p>*Note: This covers setting up an iPad for RDP access to a local server.*</p>
+                <div class="action-buttons">
+                    <button class="button-save" onclick="saveProgress()">Save Progress</button>
+                    <button onclick="saveAsPDF()">Export to PDF</button>
+                    <button class="button-clear" onclick="clearProgress()">Clear Progress</button>
+                </div>
+                <h2>Part 1: iPad Initial Setup</h2>
+                <table><thead><tr><th style="width: 5%;">Step</th><th style="width: 25%;">Task Description</th><th style="width: 10%;">Completed</th><th style="width: 30%;">Configuration Detail</th><th style="width: 30%;">Remark</th></tr></thead><tbody><tr><td>1.1</td><td>Create Apple ID</td><td class="status-cell"><input type="checkbox"/></td><td>Settings > Sign in > "Don't have an Apple ID?" > Create.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>1.2</td><td>Enter Details</td><td class="status-cell"><input type="checkbox"/></td><td>Name: **Wawio Support**, DOB: **01/01/1981**.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>1.3</td><td>Create iCloud Email & Password</td><td class="status-cell"><input type="checkbox"/></td><td>Use restaurant name for email. Use name + street address for password.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>1.4</td><td>Configure App Store Account</td><td class="status-cell"><input type="checkbox"/></td><td>Open App Store, select payment **"None"**, fill billing address.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr></tbody></table>
+                <h2>Part 2: Install and Setup TS-Plus</h2>
+                <table><thead><tr><th style="width: 5%;">Step</th><th style="width: 25%;">Task Description</th><th style="width: 10%;">Completed</th><th style="width: 30%;">Configuration Detail</th><th style="width: 30%;">Remark</th></tr></thead><tbody><tr><td>2.1</td><td>Download & Install TSPlus</td><td class="status-cell"><input type="checkbox"/></td><td>Install **TSPlus Remote Access** from `tsplus.net`. Decline Java & initial reboot.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>2.2</td><td>Change RDP Port</td><td class="status-cell"><input type="checkbox"/></td><td>AdminTool > HOME > Change RDP port to **9559**. Decline reboot.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>2.3</td><td>Disable Time Zone Redirection</td><td class="status-cell"><input type="checkbox"/></td><td>AdminTool > SESSION > Setting > Uncheck. Also disable in GPO.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>2.4</td><td>Create Tablet Users</td><td class="status-cell"><input type="checkbox"/></td><td>AdminTool > SESSION > Client Generator. Create users (e.g., **TAB01**).</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>2.5</td><td>Assign Admin Rights</td><td class="status-cell"><input type="checkbox"/></td><td>Add new users to the **Administrators** group.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>2.6</td><td>Add Firewall Rule & Reboot</td><td class="status-cell"><input type="checkbox"/></td><td>Add Inbound rule for **TCP Port 9559**. Reboot server via AdminTool.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr></tbody></table>
+                <h2>Part 3: Setup RDP Client on iPad</h2>
+                <table><thead><tr><th style="width: 5%;">Step</th><th style="width: 25%;">Task Description</th><th style="width: 10%;">Completed</th><th style="width: 30%;">Configuration Detail</th><th style="width: 30%;">Remark</th></tr></thead><tbody><tr><td>3.1</td><td>Download Jump Desktop</td><td class="status-cell"><input type="checkbox"/></td><td>Download from App Store.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>3.2</td><td>Create New Connection</td><td class="status-cell"><input type="checkbox"/></td><td>Tap **+**. Host: **IP of Main DB Server**. Port: **9559**.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>3.3</td><td>Configure Autologon & Touch</td><td class="status-cell"><input type="checkbox"/></td><td>Enter user credentials. Set Touch option to **Pen**, turn off **Show Pointer**.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>3.4</td><td>Create & Configure 4Soft Shortcut</td><td class="status-cell"><input type="checkbox"/></td><td>Create shortcut for `4softremote`, rename to **"4Soft Tab"**, set as admin.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>3.5</td><td>Activate RDP License</td><td class="status-cell"><input type="checkbox"/></td><td>Run `activate` app, select **Add 4Soft POS**.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr></tbody></table>
+            </div>
+            
+            <div id="media-display" class="tab-content media-display-theme">
+                <h1>Customer Media Display Setup</h1>
+                <table class="metadata-header"><tr><td colspan="3">**Business Name:** <input type="text" id="media-business" class="business-name-input" value=""/></td></tr><tr><td style="width: 35%;">**Station ID:** <input type="text" id="media-station" value=""/></td><td style="width: 35%;">**Technician:** <input type="text" id="media-tech" value=""/></td><td style="width: 30%;">**Date Completed:** <input type="date" id="media-date" value=""/></td></tr></table>
+                <p>*Note: This outlines setting up the 4Soft customer-facing media display.*</p>
+                <div class="action-buttons">
+                    <button class="button-save" onclick="saveProgress()">Save Progress</button>
+                    <button onclick="saveAsPDF()">Export to PDF</button>
+                    <button class="button-clear" onclick="clearProgress()">Clear Progress</button>
+                </div>
+                <h2>Part 1: Add Media Files</h2>
+                <table><thead><tr><th style="width: 5%;">Step</th><th style="width: 25%;">Task Description</th><th style="width: 10%;">Completed</th><th style="width: 30%;">Configuration Detail</th><th style="width: 30%;">Remark</th></tr></thead><tbody><tr><td>1.1</td><td>Access & Add Media Files</td><td class="status-cell"><input type="checkbox"/></td><td>Back Office > General Config > Media Server. Upload images/videos.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr></tbody></table>
+                <h2>Part 2: Create Media Set</h2>
+                <table><thead><tr><th style="width: 5%;">Step</th><th style="width: 25%;">Task Description</th><th style="width: 10%;">Completed</th><th style="width: 30%;">Configuration Detail</th><th style="width: 30%;">Remark</th></tr></thead><tbody><tr><td>2.1</td><td>Start & Define Set</td><td class="status-cell"><input type="checkbox"/></td><td>Under “Media Sets”, click “+ New”. Add name, time, and days.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>2.2</td><td>Add Files & Save</td><td class="status-cell"><input type="checkbox"/></td><td>Click “+ Add File”, select media, click “Ok”, then “Save”.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr></tbody></table>
+                <h2>Part 3: Create and Export Campaign</h2>
+                <table><thead><tr><th style="width: 5%;">Step</th><th style="width: 25%;">Task Description</th><th style="width: 10%;">Completed</th><th style="width: 30%;">Configuration Detail</th><th style="width: 30%;">Remark</th></tr></thead><tbody><tr><td>3.1</td><td>Start & Define Campaign</td><td class="status-cell"><input type="checkbox"/></td><td>Under “Campaigns”, click “+ New”. Enter name and dates.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>3.2</td><td>Add Media Set</td><td class="status-cell"><input type="checkbox"/></td><td>Click “+ Add Mediaset”, choose the set, click “Ok”.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>3.3</td><td>Save and Export</td><td class="status-cell"><input type="checkbox"/></td><td>“Save”, then “Export”. Save the `.zip` file.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr></tbody></table>
+                <h2>Part 4: Import Campaign and Start Display</h2>
+                <table><thead><tr><th style="width: 5%;">Step</th><th style="width: 25%;">Task Description</th><th style="width: 10%;">Completed</th><th style="width: 30%;">Configuration Detail</th><th style="width: 30%;">Remark</th></tr></thead><tbody><tr><td>4.1</td><td>Import Campaign</td><td class="status-cell"><input type="checkbox"/></td><td>POS Front End > “MORE” > “MEDIA OPERATION”. Import the `.zip` file.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr><tr><td>4.2</td><td>Start Slideshow</td><td class="status-cell"><input type="checkbox"/></td><td>Select “MEDIA START”. Verify display on secondary screen.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr></tbody></table>
+                <h2>Troubleshooting: 4Soft POS Failure</h2>
+                <table><thead><tr><th style="width: 5%;">Step</th><th style="width: 25%;">Task Description</th><th style="width: 10%;">Completed</th><th style="width: 30%;">Configuration Detail</th><th style="width: 30%;">Remark</th></tr></thead><tbody><tr class="troubleshooting-row"><td>T.1</td><td>Execute Fix</td><td class="status-cell"><input type="checkbox"/></td><td>Create an empty folder named **“files”** in `C:\ProgramData\4SoftPos\MediaDisplay\data`.</td><td><textarea oninput="autoGrow(this)"></textarea></td></tr></tbody></table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openTab(evt, checklistName) {
+        const tabContents = document.querySelectorAll(".tab-content");
+        tabContents.forEach(tab => tab.classList.remove("active"));
+
+        const tabButtons = document.querySelectorAll(".tab-button");
+        tabButtons.forEach(button => button.classList.remove("active"));
+
+        document.getElementById(checklistName).classList.add("active");
+        evt.currentTarget.classList.add("active");
+        
+        const mainContainer = document.querySelector(".main-container");
+        mainContainer.className = "main-container";
+        
+        const titleMap = {
+            'pos-prep': 'POS Preparation Checklist',
+            'four-soft': '4Soft Installation Checklist',
+            'o-att': 'O-ATT Installation Checklist',
+            'rdp-setup': 'RDP Local Setup Checklist',
+            'media-display': 'Media Display Setup Checklist'
+        };
+        document.title = titleMap[checklistName] || 'Wawio Installation Checklists';
+
+        const themeMap = {
+            'pos-prep': 'pos-prep-theme',
+            'four-soft': 'four-soft-theme',
+            'o-att': 'o-att-theme',
+            'rdp-setup': 'rdp-setup-theme',
+            'media-display': 'media-display-theme'
+        };
+        if (themeMap[checklistName]) {
+            mainContainer.classList.add(themeMap[checklistName]);
+        }
+    }
+
+    function saveAsPDF() {
+        window.print();
+    }
+    
+    function autoGrow(element) {
+        element.style.height = "5px";
+        element.style.height = (element.scrollHeight) + "px";
+    }
+    
+    const storageKey = 'wawioChecklistData';
+
+    function saveProgress() {
+        const data = {};
+        document.querySelectorAll('input[id], textarea[id]').forEach(element => {
+            if (element.type === 'checkbox') {
+                data[element.id] = element.checked;
+            } else {
+                data[element.id] = element.value;
+            }
+        });
+        localStorage.setItem(storageKey, JSON.stringify(data));
+        alert('Progress has been saved to this browser!');
+    }
+
+    function loadProgress() {
+        const savedData = localStorage.getItem(storageKey);
+        if (savedData) {
+            const data = JSON.parse(savedData);
+            for (const id in data) {
+                const element = document.getElementById(id);
+                if (element) {
+                    if (element.type === 'checkbox') {
+                        element.checked = data[id];
+                    } else {
+                        element.value = data[id];
+                    }
+                    if (element.tagName.toLowerCase() === 'textarea') {
+                        autoGrow(element);
+                    }
+                }
+            }
+        }
+    }
+
+    function clearProgress() {
+        if (confirm('Are you sure you want to clear all saved progress? This cannot be undone.')) {
+            localStorage.removeItem(storageKey);
+            location.reload();
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        // Assign unique IDs to all form elements for saving/loading
+        document.querySelectorAll('input, textarea').forEach((el, index) => {
+            if (!el.id) {
+                el.id = `element-${index}`;
+            }
+        });
+        
+        loadProgress(); // Load saved data on page open
+
+        document.querySelectorAll('textarea').forEach(textarea => {
+            textarea.addEventListener('input', () => autoGrow(textarea), false);
+        });
+
+        document.querySelector(".main-container").classList.add('pos-prep-theme');
+        document.title = 'POS Preparation Checklist';
+    });
+</script>
+
+</body>
+</html>
